@@ -4,11 +4,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-	return 'this is home'
+	return 'welcome to homepage'
 
 @app.route('/register')
 def register():
-	return 'welcome to registration pg'
+	return 'welcome to registration page'
 
 @app.route('/code')
 def coding_chal():
@@ -17,7 +17,7 @@ def coding_chal():
 @app.route('/process_code', methods=['POST'])
 def process_code():
 	user_code = request.form['code_submission']
-	return ""
+	return "your code was " + user_code
 
 @app.route('/match')
 def match():
@@ -26,11 +26,6 @@ def match():
 @app.route('/chat')
 def chat():
 	return "welcome to chat"
-
-@app.route('/submit_code', methods=['POST'])
-def handle_data():
-    submittedcode = request.form['code_submission']
-    return "you submitted " + submittedcode
 
 if __name__ == '__main__':
 	app.run(debug=True)
