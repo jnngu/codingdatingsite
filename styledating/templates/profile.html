@@ -1,0 +1,9 @@
+<!doctype HTML>
+<link rel="stylesheet" type="text/css" href = {{ url_for("static", filename="style.css")}} >
+<h1> hi; thiis is a header </h1>
+
+{% if name=="bob" %}
+<p> Hi {{ name }} </p>
+{% else %}
+<p> plz log in </p>
+{% endif %}
