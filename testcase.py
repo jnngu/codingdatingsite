@@ -8,16 +8,14 @@ import os
 
 
 timeout_ex = """def foo(x):
-    while 1==1:
-        continue
-    return x"""
+    print(x)
+    """
 
 test_ex = """def foo(x): return x"""
 
-test_c = "int foo(int x) {return x;}"
-#exec(bar)
+test_c = """#include<stdio.h>
+void foo(int x) {printf(\"%d\\n\", x);}"""
 
-#print(foo(1))
 class TimeOutError(Exception):
     pass
 
@@ -33,68 +31,98 @@ def generateC (codeStr, functionName, testInput):
         os.remove("temp.c")
 
     f = open("temp.c","x")
-    f.write("#include <stdio.h>\n")
     f.write(test_c)
 
     f.write("\nint main(){")
-    f.write("int out = {}({});".format(functionName, inputVal))
-    f.write(" return out;}")
+    f.write("{}({});".format(functionName, inputVal))
+    f.write(" return 0;}")
 
     f.close()
 
 
 
 #language: python, c
-#codeStr: sstring representation of code
+#codeStr: string representation of code
 #functionName: name of function to be called
-#testList: lists of (input val, expected output)
-def test (language, codeStr, functionName, testList):
+#testInputs: list of input vals
+def runCode (language, codeStr, functionName, testInputs):
     incorrectCases = 0
     outString = ""
     timeoutTime = 5
+    oldOut = sys.stdout
+
+    if os.path.exists("out.txt"):
+        os.remove("out.txt")
+    sys.stdout = open('out.txt', 'w')
     try:
         if language == "python":
             exec(codeStr)
 
-        for i in range(len(testList)):
-            print(testList[i])
-            signal.signal(signal.SIGALRM, signal_handler)
+        for i in range(len(testInputs)):
+            signal.signal(signal.SIGALRM, signal_handler)                
             if language == "python":
                 signal.alarm(timeoutTime) 
-                out = eval('{}({})'.format(functionName, testList[i][0]))
+                eval('{}({})'.format(functionName, testInputs[i]))
             elif language == "c":
-                generateC(codeStr, functionName, testList[i][0])
+                generateC(codeStr, functionName, testInputs[i])
                 compileOut = os.popen('gcc -o temp temp.c -w').read()
+
                 if "error" in compileOut:
                     outString += compileOut
-                    return (outString, -1)
+                    sys.stdout.close()
+                    sys.stdout = oldOut
+                    return -1
+                    
                 signal.alarm(timeoutTime) 
-                out = int(os.popen("./temp; echo $?").read())
-
+                out = os.popen("./temp").read()
+                print(out.strip())
             signal.alarm(0)
-            if os.path.exists("temp.c"):
-                os.remove("temp.c")
-            if os.path.exists("temp"):
-                os.remove("temp")
+        sys.stdout.close()
+        sys.stdout = oldOut
 
-            if out == testList[i][1]:
-                outString += "Testcase {} Passed\n".format(i)
-            else:
-                outString += "Testcase {} Failed\n".format(i)
-                incorrectCases += 1
-
-        return (outString,incorrectCases)
+        return 0
     except TimeOutError as te:
         outString += "Timed out!\n"
-        return (outString, -1)
+        sys.stdout.close()
+        sys.stdout = oldOut
+        return -1
 
     except Exception as e:
         tb = traceback.format_exc()
         outString += tb
-        return (outString, -1)
+        sys.stdout.close()
+        sys.stdout = oldOut
+        return -1
+
+def compareFiles (userFile, goldenFile):
+    user = open(userFile, "r")
+    golden = open(goldenFile, "r")
+    numWrong = 0
+    userLine = user.readlines()
+    goldenLine = golden.readlines()
+    for idx in range(len(goldenLine)):
+        if idx >= len(userLine):
+            print("Test Case {} Failed".format(idx))
+            numWrong += 1            
+        elif userLine[idx].strip() == goldenLine[idx].strip():
+            print("Test Case {} Passed".format(idx))
+        else:
+            print("Test Case {} Failed".format(idx))
+            numWrong += 1
+
+    user.close()
+    golden.close()
+    return numWrong
 
 
-output = test("c", test_ex, "foo", [(1,1), (2,3), (4,4)])
-print(output[0])
-print(output[1])
+
+
+
+output = runCode("python", timeout_ex, "foo", [1,2,3])
+x = compareFiles("out.txt", "golden.txt")
+print(x)
+
+output = runCode("c", "test_c", "foo", [1,2,3])
+x = compareFiles("out.txt", "golden.txt")
+print(x)
 
