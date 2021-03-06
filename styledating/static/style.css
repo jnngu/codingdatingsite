@@ -1,3 +1,127 @@
-h1 {
-	color:orange;
+html {
+	font-family: 'Avenir';
 }
+body {
+	background-color:white;
+}
+a {
+	text-decoration: none; 
+	color:inherit;
+}
+a:visited {
+	color:black;
+}
+a:hover {
+	color:grey;
+}
+.question {
+  	padding: 25px;
+}
+h1 {
+	color:hotpink;
+}
+strong {
+	font-weight: 900;
+}
+
+.head_link:hover{
+	background-color: pink
+}
+
+.input, #results {
+  height: 60%;
+}
+.input {
+  border: 1px solid gray;
+  width: 90%;
+  font-family: monospace;
+  font-size: 12pt;
+  padding: 10px;
+}
+input[type=submit] {
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+  background-color: pink;
+  color: white;
+  font-weight: bolder;
+}
+
+.subheading {
+	background-color:#333333;
+	font-size:24pt;
+	color:white;
+	padding:0.5em;
+	text-align:center;
+	width:30%;
+	margin:1em;
+	border-radius:25px;
+	margin-top:2em;
+}
+
+.center {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width:100%;
+}
+.title {
+	font-size: 42pt;
+	margin:12pt;
+}
+.content {
+	width:50%;
+	line-height:1.5;
+}
+
+.head_link {
+	padding: 0em 1em 0em 1em;
+	float:left;
+	color:black;
+	border-radius:1em;
+}
+
+.vbar { 
+	color:hotpink;
+	float:left;
+}
+.project_box {
+	float:left;
+	width:27%;
+	height:200pt;
+	margin:1.2%;
+	background-color:#dddddd;
+	padding:1em;
+	border-radius: 5px;
+}
+.project_title {
+	font-weight:bold;
+	text-align: center;
+	font-size:15pt;
+	padding-bottom:0.5em;
+}
+.project_contents {
+	text-align: center;
+}
+.item_label {
+	margin: 2px 10px 2px 2px;
+	background: #555555;
+	border-radius: 5px;
+	padding: 1px 10px;
+	text-align: center;
+	color: white;
+	font-size: 0.75rem;
+	max-width: 160px;
+	display: inline-block;
+	white-space: nowrap;
+}
+.twocol {
+	float:left;
+	width:48%;
+	margin:1%;
+
+}
+
+
+

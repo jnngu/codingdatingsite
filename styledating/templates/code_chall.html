@@ -1,0 +1,62 @@
+<!doctype HTML>
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='style.css')}}">
+
+<script> 
+document.getElementById('code').addEventListener('keydown', function(e) {
+  if (e.key == 'Tab') {
+    e.preventDefault();
+    var start = this.selectionStart;
+    var end = this.selectionEnd;
+
+    // set textarea value to: text before caret + tab + text after caret
+    this.value = this.value.substring(0, start) +
+      "\t" + this.value.substring(end);
+
+    // put caret at right position again
+    this.selectionStart =
+      this.selectionEnd = start + 1;
+  }
+});
+</script>
+
+
+<div class="center" style="height:30%">
+	<h1> INSERT PITHY HEADING and/or NAME OF PRODUCT HERE </h1>
+	<div>
+		<div class="head_link"> <a href="profile"> My Profile </a> </div> 
+		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="evaluations"> My Evaluations </a> </div> 
+		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="matches"> My Matches </a>  </div> 
+	</div>
+</div>
+
+<h1> Code Evaluation (or better title here) </h1>
+
+<div class="container">
+  <div class="question">
+    {{ question_text }}
+  </div>
+  <div class="code-area">
+  	<textarea onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
+  	rows="20" class="input" id="code" form="user_code" form="final_submission" 
+  	name="code_submission" autofocus>{{ code }}</textarea>
+	<br/><br/>
+
+	<form id="user_code" action="{{ url_for('process_code') }}" method="post" enctype="multipart/form-data">
+	<input type="submit" value="RUN TESTS">
+	</form>
+  </div>
+</div>
+
+<h1> Results </h1>
+<div class="results">
+{{ results }}
+</div>
+
+{% if done %}
+<h1> You passed all the test cases! Your code has been submitted. </h1>
+{% elif done == False %}
+<h1> You haven't passed all the test cases yet. Your code has not been saved or submitted. </h1>
+<h3> Don't worry. Keep going; your true love is just a few lines of code away! </h3>
+{% endif %}

@@ -17,7 +17,7 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-	return 'welcome to homepage'
+	return render_template("index.html")
 
 @app.route('/register')
 def register():
@@ -68,20 +68,43 @@ def logout():
 @app.route('/code')
 @login_required
 def coding_chal():
-	return render_template("formpg.html")
+	question_text = "sample question text"
+	return render_template("code_chall.html",question_text=question_text,code="def main():",results="No results yet!",done=None)
+
+def autograde(s):
+	if len(s.split('\n')) > 1:
+		return ("good job!", True)
+	return ("not quite", False)
 
 @app.route('/process_code', methods=['POST'])
 @login_required
 def process_code():
+	question_text = "sample question text"
 	user_code = request.form['code_submission']
-	return "your code was " + user_code
+	results, passed = autograde(user_code)
+	if passed:
+		sql_execute('INSERT INTO snippets VALUES(?,?)', (current_user.name,user_code))
 
-@app.route('/match')
+	return render_template("code_chall.html",question_text=question_text,code=user_code,results=results,done=passed)
+
+@app.route('/matches')
 @login_required
-def match():
+def matches():
 	print(current_user)
 	print(current_user.id)
 	return f"hi {current_user.name}, here are your matches"
+
+@app.route('/evaluations')
+@login_required
+def evaluations():
+	print(current_user)
+	print(current_user.id)
+	return f"hi {current_user.name}, here are your evaluations"
+
+@app.route('/profile')
+@login_required
+def profile():
+	return render_template("profile.html", user=current_user, isMe=True)
 
 @app.route('/chat')
 @login_required
