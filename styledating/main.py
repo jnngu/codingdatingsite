@@ -112,8 +112,8 @@ def process_code():
 		results = results.split('\n')
 
 		if numWrong == 0:
-			#TODO: user_code is a string with the user's submitted code. 
-			# current_user.username is the user's username. 
+			#TODO: user_code is a string with the user's submitted code.
+			# current_user.username is the user's username.
 			# @ Brandon.
 			current_user.updatedb(n,user_code)
 		return render_template("code_chall.html",n=n,\
@@ -126,7 +126,7 @@ def process_code():
 def matches(typ=None,other=None):
 	if other != None:
 		sql_execute('''insert into actions values(?,?,?)''', (typ,current_user.username,other))
-	
+
 	if current_user.numdone() < 3:
 		return render_template("matches.html",user=current_user,curr=current_user)
 
@@ -137,7 +137,7 @@ def matches(typ=None,other=None):
 @login_required
 def evaluations():
 	return render_template("evaluations.html",user=current_user)
-	
+
 @app.route('/profile')
 @login_required
 def profile():

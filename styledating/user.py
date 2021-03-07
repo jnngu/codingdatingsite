@@ -13,7 +13,7 @@ class User(UserMixin):
 		self.picfile = f[0][1]
 		self.description = "blah."
 		self.c = list(f[0][2:5])
-		
+
 		self.num = 3 - (self.c[0] == "") - (self.c[1] == "") - (self.c[2] == "")
 
 	def is_authenticated(self):
@@ -34,8 +34,8 @@ class User(UserMixin):
 		unrejected_possibilities = [x[0] for x in possibilities]
 		print(unrejected_possibilities)
 
-		#TODO: currently just returning someone at random (whoever happens to be the first returned). 
-		# using this list of unrejected possibilities, find the one with the closest vector to ourselves. 
+		#TODO: currently just returning someone at random (whoever happens to be the first returned).
+		# using this list of unrejected possibilities, find the one with the closest vector to ourselves.
 		if unrejected_possibilities == []:
 			return None
 		else:
@@ -50,7 +50,7 @@ class User(UserMixin):
 			f = sql_execute('''SELECT c3 FROM users where username=?''', (self.username,))
 		print("f is ", f)
 		return len(f[0][0])
-	
+
 	def updatedb(self,n,code):
 		f = sql_execute('''select id,username,name,pic_file,pass_hash,c1,c2,c3 from users where username=?''',(self.username,))
 		(_id,username,name,picfile,passhash,c1,c2,c3) = f[0]
@@ -65,7 +65,7 @@ class User(UserMixin):
 
 
 	def get_mutual_matches(self):
-		mutuals = sql_execute('''SELECT username FROM users where username in (SELECT target from actions where actor=? AND 
+		mutuals = sql_execute('''SELECT username FROM users where username in (SELECT target from actions where actor=? AND
 			act="yes") AND username in (SELECT actor from actions where target=? AND act="yes") ''', (self.username, self.username))
 		print(mutuals)
 		return [User(x[0]) for x in mutuals]
