@@ -2,17 +2,17 @@
 <link rel="stylesheet" type="text/css" href = {{ url_for("static", filename="style.css")}} >
 
 <div class="center" style="height:30%">
-	<h1> INSERT PITHY HEADING and/or NAME OF PRODUCT HERE </h1>
+	<h1> TypeMatch: A polynomial time algorithm for love </h1>
 	<div>
-		<div class="head_link"> <a href="profile"> My Profile </a> </div> 
+		<div class="head_link"> <a href="profile"> My Profile </a> </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="evaluations"><b> My Evaluations </b></a> </div> 
+		<div class="head_link"> <a href="evaluations"><b> My Evaluations </b></a> </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="matches"> My Matches </a>  </div> 
+		<div class="head_link"> <a href="matches"> My Matches </a>  </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="/mutual"> Mutual Matches</a>  </div> 
+		<div class="head_link"> <a href="/mutual"> Mutual Matches</a>  </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="logout"> <em> Log Out </em> </a>  </div> 
+		<div class="head_link"> <a href="logout"> <em> Log Out </em> </a>  </div>
 	</div>
 </div>
 
@@ -21,62 +21,62 @@
 
 <div class="content">
 	<div class="project_box">
-		<div class="project_title"> 
-			<p> Challenge 1: 
-			{% if user.donewith(1) == 0 %} 
-				incomplete 
-			{% else %} 
+		<div class="project_title">
+			<p> Challenge 1:
+			{% if user.donewith(1) == 0 %}
+				incomplete
+			{% else %}
 				complete!
 			{% endif %}
 		</p>
 		</div>
-		<div class="project_contents"> 
-			{% if user.donewith(1) == 0 %} 
+		<div class="project_contents">
+			{% if user.donewith(1) == 0 %}
 			<form action="/code/1">
 		    <input type="submit" value="Complete Evaluation" />
 			</form>
-			{% else %} 
+			{% else %}
 			{% endif %}
 		</div>
 	</div>
 
 	<div class="project_box">
-		<div class="project_title"> 
-			<p> Challenge 2: 
-			{% if user.donewith(2) == 0 %} 
-				incomplete 
-			{% else %} 
+		<div class="project_title">
+			<p> Challenge 2:
+			{% if user.donewith(2) == 0 %}
+				incomplete
+			{% else %}
 				complete!
 			{% endif %}
 		</p>
 		</div>
-		<div class="project_contents"> 
-			{% if user.donewith(2) == 0 %} 
+		<div class="project_contents">
+			{% if user.donewith(2) == 0 %}
 			<form action="/code/2">
 		    <input type="submit" value="Complete Evaluation" />
 			</form>
-			{% else %} 
+			{% else %}
 			<img >
 			{% endif %}
 		</div>
 	</div>
 
 	<div class="project_box">
-		<div class="project_title"> 
-			<p> Challenge 3: 
-			{% if user.donewith(3) == 0 %} 
-				incomplete 
-			{% else %} 
+		<div class="project_title">
+			<p> Challenge 3:
+			{% if user.donewith(3) == 0 %}
+				incomplete
+			{% else %}
 				complete!
 			{% endif %}
 		</p>
 		</div>
-		<div class="project_contents"> 
-			{% if user.donewith(3) == 0 %} 
+		<div class="project_contents">
+			{% if user.donewith(3) == 0 %}
 			<form action="/code/3">
 		    <input type="submit" value="Complete Evaluation" />
 			</form>
-			{% else %} 
+			{% else %}
 			{% endif %}
 		</div>
 	</div>

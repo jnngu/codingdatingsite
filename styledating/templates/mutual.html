@@ -3,33 +3,33 @@
 <link rel="stylesheet" type="text/css" href = {{ url_for("static", filename="style.css")}} >
 
 <div class="center" style="height:30%">
-	<h1> INSERT PITHY HEADING and/or NAME OF PRODUCT HERE </h1>
+	<h1> TypeMatch: Find your own most significant bit! </h1>
 	<div>
-		<div class="head_link"> <a href="/profile"> My Profile </a> </div> 
+		<div class="head_link"> <a href="/profile"> My Profile </a> </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="/evaluations">My Evaluations </a> </div> 
+		<div class="head_link"> <a href="/evaluations">My Evaluations </a> </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="/matches"> See Matches </a>  </div> 
+		<div class="head_link"> <a href="/matches"> See Matches </a>  </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="/mutual"> <b> Mutual Matches </b> </a>  </div> 
+		<div class="head_link"> <a href="/mutual"> <b> Mutual Matches </b> </a>  </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="/logout"> <em> Log Out </em> </a>  </div> 
+		<div class="head_link"> <a href="/logout"> <em> Log Out </em> </a>  </div>
 	</div>
 </div>
 <center>
 
 {% if matches == [] %}
-<h1> It seems you don't have any mutual matches yet. Check back soon! 
+<h1> It seems you don't have any mutual matches yet. Check back soon!
 	</h1>
 
 {% else %}
 
 <h1> The kindred spirits who have matched you back! </h1>
 
-<table> 
+<table>
 	{% for i in matches %}
 	<tr>
-		<th style="padding:14px"> 
+		<th style="padding:14px">
 		<img class="image-cropper" src="{{'/static/pfps/'+i.username}}"/>
 		</th>
 		<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
