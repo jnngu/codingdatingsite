@@ -47,7 +47,7 @@ document.getElementById('code').addEventListener('keydown', function(e) {
 	<br/><br/>
 
 	<form id="user_code" action="{{ url_for('process_code') }}" method="post" enctype="multipart/form-data">
-	<input type="text" name="cnum" value="{{n}}">
+	<input type="hidden" name="cnum" value="{{n}}">
 	<input type="submit" value="RUN TESTS">
 	</form>
   </div>

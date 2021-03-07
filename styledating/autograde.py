@@ -129,7 +129,7 @@ def runAutograder(language, codeStr, functionName, inputFile, goldenFile):
             print("golden not found")
         else:
             correctness = compareFiles("out.txt", goldenFile)
-            print(correctness)
+            return correctness
 
 
 inputList = ["hi", "bye", "seeya"]
