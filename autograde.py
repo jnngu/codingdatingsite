@@ -116,7 +116,8 @@ def compareFiles (userFile, goldenFile):
 
 
 def runAutograder(language, codeStr, functionName, inputFile, goldenFile):
-    inputList = [i.strip().split() for i in open(inputFile).readlines()]
+    inputList = [eval(i.strip().split()[0]) for i in open(inputFile).readlines()]
+
     print(inputList)
     output = runCode(language, codeStr, functionName, inputList)
     if output[0] == -1:
