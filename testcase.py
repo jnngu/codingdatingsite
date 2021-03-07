@@ -7,14 +7,14 @@ import os
 
 
 
-timeout_ex = """def foo(x):
+python_ex = """def foo(x):
     print(x)
     """
 
 test_ex = """def foo(x): return x"""
 
 test_c = """#include<stdio.h>
-void foo(int x) {printf(\"%d\\n\", x);}"""
+void foo(char* x) {printf(\"%s\\n\", x);}"""
 
 class TimeOutError(Exception):
     pass
@@ -62,37 +62,39 @@ def runCode (language, codeStr, functionName, testInputs):
             signal.signal(signal.SIGALRM, signal_handler)                
             if language == "python":
                 signal.alarm(timeoutTime) 
-                eval('{}({})'.format(functionName, testInputs[i]))
+                if isinstance(testInputs[i], str):
+                    eval('{}(\"{}\")'.format(functionName, testInputs[i]))
+                else:
+                    eval('{}({})'.format(functionName, testInputs[i]))
             elif language == "c":
+                if isinstance(testInputs[i], str):
+                    testInputs[i] = "\"{}\"".format(testInputs[i])
                 generateC(codeStr, functionName, testInputs[i])
                 compileOut = os.popen('gcc -o temp temp.c -w').read()
 
                 if "error" in compileOut:
-                    outString += compileOut
                     sys.stdout.close()
                     sys.stdout = oldOut
-                    return -1
+                    return (-1, compileOut)
                     
                 signal.alarm(timeoutTime) 
-                out = os.popen("./temp").read()
+                out = os.popen("./temp").read() #does not detect segmentation faults
                 print(out.strip())
             signal.alarm(0)
         sys.stdout.close()
         sys.stdout = oldOut
 
-        return 0
+        return (0,"")
     except TimeOutError as te:
-        outString += "Timed out!\n"
         sys.stdout.close()
         sys.stdout = oldOut
-        return -1
+        return (-1, "Timed Out!\n")
 
     except Exception as e:
         tb = traceback.format_exc()
-        outString += tb
         sys.stdout.close()
         sys.stdout = oldOut
-        return -1
+        return (-1,tb)
 
 def compareFiles (userFile, goldenFile):
     user = open(userFile, "r")
@@ -116,13 +118,15 @@ def compareFiles (userFile, goldenFile):
 
 
 
+def runAutograder(language, codeStr, functionName, inputList, goldenFile):
+    output = runCode(language, codeStr, functionName, inputList)
+    if output[0] == -1:
+        print(output[1])
+    else:
+        correctness = compareFiles("out.txt", "golden.txt")
+        print(correctness)
 
 
-output = runCode("python", timeout_ex, "foo", [1,2,3])
-x = compareFiles("out.txt", "golden.txt")
-print(x)
-
-output = runCode("c", "test_c", "foo", [1,2,3])
-x = compareFiles("out.txt", "golden.txt")
-print(x)
-
+inputList = ["hi", "bye", "seeya"]
+runAutograder("python", python_ex, "foo", inputList, "golden.txt")
+runAutograder("c", test_c, "foo", inputList, "golden.txt")
