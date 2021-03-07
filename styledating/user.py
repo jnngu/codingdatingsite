@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 from util import *
 import random
+import os
 
 class User(UserMixin):
 	def __init__(self,username):
@@ -32,7 +33,28 @@ class User(UserMixin):
 	def compute_best_match(self):
 		possibilities = sql_execute('''SELECT username FROM users where username not in (SELECT target from actions where actor=?) AND username <>?''', (self.username, self.username))
 		unrejected_possibilities = [x[0] for x in possibilities]
-		print(unrejected_possibilities)
+		print("unrej", unrejected_possibilities)
+		percentage_list = []
+		f = sql_execute('''SELECT c1,c2,c3 FROM users where username=?''', (self.username,))
+		code = f[0][0]
+		if os.path.exists("file1.py"):
+			os.remove("file1.py")
+		fu = open("file1.py", "x")
+		fu.write(code)
+		fu.close()	
+		for x in unrejected_possibilities:
+			f2 = sql_execute('''SELECT c1,c2,c3 FROM users where username=?''', (x,))
+			code2 = f2[0][0]
+			if os.path.exists("file2.py"):
+				os.remove("file2.py")
+			fu2 = open("file2.py", "x")
+			fu2.write(code2)
+			fu2.close()
+			os.popen('sml -m sources.cm <<< \"file1.py file2.py\"')
+			f3 = open('output', 'r')
+			perline = f3.readline()
+			print("line", perline)
+			#percentage_list += [()]
 
 		#TODO: currently just returning someone at random (whoever happens to be the first returned).
 		# using this list of unrejected possibilities, find the one with the closest vector to ourselves.
