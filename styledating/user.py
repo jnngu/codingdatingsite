@@ -32,6 +32,7 @@ class User(UserMixin):
 	def compute_best_match(self):
 		possibilities = sql_execute('''SELECT username FROM users where username not in (SELECT target from actions where actor=?) AND username <>?''', (self.username, self.username))
 		unrejected_possibilities = [x[0] for x in possibilities]
+		
 		#print("unrej", unrejected_possibilities)
 		percentage_list = []
 		f = sql_execute('''SELECT c1,c2,c3 FROM users where username=?''', (self.username,))

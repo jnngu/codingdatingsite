@@ -1,0 +1,2 @@
+Skeleton 5
+d3aä¢Metrics1"jh2aä¢M1"gp1d"LineMetric"aä¢M2"gp1d"IndentMetric"çğ±å¢MkEitherMetric"aä¢Metrics2"jh2aÿgp1d"AverageLineLengthMetric"aÿ(gp1d"MaxLineLengthMetric"ÿ?ad"Metrics"jh2aÿgp1ÿaÿ(gp1ÿÿ?
