@@ -81,6 +81,20 @@ def coding_chal(n):
 		return render_template("code_chall.html",\
 			n=n,question_text=question_text,code=sc,results=["No results yet!"],done=None)
 
+@app.route('/process_language', methods=['POST'])
+def process_language():
+	n = int(request.form['n'])
+	if request.form['language'] == "Python":
+		sc = open("challenges/"+dct[n]+"_sc.py").read()
+		question_text = open("challenges/"+dct[n]+"_desc.txt").read().split('\n')
+		return render_template("code_chall.html",\
+			n=n,question_text=question_text,code=sc,results=["No results yet!"],done=None,lang='python')
+	else:
+		sc = open("challenges/"+dct[n]+"_sc.c").read()
+		question_text = open("challenges/"+dct[n]+"_desc.txt").read().split('\n')
+		return render_template("code_chall.html",\
+			n=n,question_text=question_text,code=sc,results=["No results yet!"],done=None,lang='c')
+
 @app.route('/process_code', methods=['POST'])
 @login_required
 def process_code():
@@ -92,11 +106,15 @@ def process_code():
 		user_code = request.form['code_submission']
 		tc_filename ="challenges/"+dct[n]+"_testcases.txt"
 		sol_filename = "challenges/"+dct[n]+"_sol.txt"
+		lang = request.form['language']
 
-		(numWrong,results) = runAutograder("python",user_code,fcn_names[n],tc_filename, sol_filename)
+		(numWrong,results) = runAutograder(lang.lower(),user_code,fcn_names[n],tc_filename, sol_filename)
 		results = results.split('\n')
 
 		if numWrong == 0:
+			#TODO: user_code is a string with the user's submitted code. 
+			# current_user.username is the user's username. 
+			# @ Brandon.
 			current_user.updatedb(n,user_code)
 		return render_template("code_chall.html",n=n,\
 			question_text=question_text,code=user_code,results=results,\
@@ -110,12 +128,10 @@ def matches(typ=None,other=None):
 		sql_execute('''insert into actions values(?,?,?)''', (typ,current_user.username,other))
 	
 	if current_user.numdone() < 3:
-		return render_template("notyet.html",user=current_user)
+		return render_template("matches.html",user=current_user,curr=current_user)
 
 	best_match = current_user.compute_best_match()
-	return render_template("matches.html",user=best_match)
-	
-
+	return render_template("matches.html",user=best_match,curr=current_user)
 
 @app.route('/evaluations')
 @login_required
@@ -127,10 +143,11 @@ def evaluations():
 def profile():
 	return render_template("profile.html", user=current_user, isMe=True)
 
-@app.route('/chat')
+@app.route('/mutual')
 @login_required
-def chat():
-	matches = current_user.get_matches()
+def mutual():
+	matches = current_user.get_mutual_matches()
+	return render_template("mutual.html", matches=matches, user=current_user)
 
 
 if __name__ == '__main__':

@@ -11,6 +11,7 @@ class User(UserMixin):
 		print(f)
 		self.name = f[0][0]
 		self.picfile = f[0][1]
+		self.description = "blah."
 		self.c = list(f[0][2:5])
 		
 		self.num = 3 - (self.c[0] == "") - (self.c[1] == "") - (self.c[2] == "")
@@ -29,7 +30,16 @@ class User(UserMixin):
 		return (f[0][0] != "") + (f[0][1] != "") +(f[0][2] != "")
 
 	def compute_best_match(self):
-		return User('b')
+		possibilities = sql_execute('''SELECT username FROM users where username not in (SELECT target from actions where actor=?) AND username <>?''', (self.username, self.username))
+		unrejected_possibilities = [x[0] for x in possibilities]
+		print(unrejected_possibilities)
+
+		#TODO: currently just returning someone at random (whoever happens to be the first returned). 
+		# using this list of unrejected possibilities, find the one with the closest vector to ourselves. 
+		if unrejected_possibilities == []:
+			return None
+		else:
+			return User(unrejected_possibilities[0])
 
 	def donewith(self,n):
 		if n==1:
@@ -51,3 +61,15 @@ class User(UserMixin):
 			sql_execute('''INSERT INTO users VALUES(?,?,?,?,?,?,?,?)''',(_id,username,name,picfile,passhash,c1,code,c3))
 		if n==3:
 			sql_execute('''INSERT INTO users VALUES(?,?,?,?,?,?,?,?)''',(_id,username,name,picfile,passhash,c1,c2,code))
+
+
+
+	def get_mutual_matches(self):
+		mutuals = sql_execute('''SELECT username FROM users where username in (SELECT target from actions where actor=? AND 
+			act="yes") AND username in (SELECT actor from actions where target=? AND act="yes") ''', (self.username, self.username))
+		print(mutuals)
+		return [User(x[0]) for x in mutuals]
+
+
+
+

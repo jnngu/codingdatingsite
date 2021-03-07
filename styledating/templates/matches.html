@@ -11,6 +11,8 @@
 		<div class="vbar"> <3 </div>
 		<div class="head_link"> <a href="/matches"> <b> My Matches </b> </a>  </div> 
 		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="/mutual"> Mutual Matches </a>  </div> 
+		<div class="vbar"> <3 </div>
 		<div class="head_link"> <a href="/logout"> <em> Log Out </em> </a>  </div> 
 	</div>
 </div>
@@ -20,7 +22,7 @@
 {% if user == None %}
 <h1> You've exhausted all your top matches! Visit the <b> mutual matches </b> page to see if anyone matched you back. </h1>
 
-{% elif user.numdone() == 3 %}
+{% elif curr.numdone() == 3 %}
 <br>
 
 <div class="block-effect" style="--td: 1.2s">
