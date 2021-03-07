@@ -5,19 +5,22 @@
 <div class="center" style="height:30%">
 	<h1> INSERT PITHY HEADING and/or NAME OF PRODUCT HERE </h1>
 	<div>
-		<div class="head_link"> <a href="profile"> My Profile </a> </div> 
+		<div class="head_link"> <a href="/profile"> My Profile </a> </div> 
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="evaluations">My Evaluations </a> </div> 
+		<div class="head_link"> <a href="/evaluations">My Evaluations </a> </div> 
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="matches"> <b> My Matches </b> </a>  </div> 
+		<div class="head_link"> <a href="/matches"> <b> My Matches </b> </a>  </div> 
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="logout"> <em> Log Out </em> </a>  </div> 
+		<div class="head_link"> <a href="/logout"> <em> Log Out </em> </a>  </div> 
 	</div>
 </div>
 
 <center>
 
-{% if user.numdone() == 3 %}
+{% if user == None %}
+<h1> You've exhausted all your top matches! Visit the <b> mutual matches </b> page to see if anyone matched you back. </h1>
+
+{% elif user.numdone() == 3 %}
 <br>
 
 <div class="block-effect" style="--td: 1.2s">
@@ -35,9 +38,9 @@
 <div class="block-reveal" style="--bc:orange; --d: .4s">
 <table> 
 	<tr> 
-		<th>yes </th>
+		<th><a href="{{'/matches/yes/'+user.username}}">yes</a> </th>
 		<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-		<th> no</th>
+		<th><a href="{{'/matches/no/'+user.username}}">no</a></th>
 	</tr>
 </table>
 </div>
@@ -48,5 +51,7 @@
 </center>
 
 {% else %}
-no
+
+<h2> You must complete the evaluation before getting assigned your matches! </h2>
+
 {% endif %}

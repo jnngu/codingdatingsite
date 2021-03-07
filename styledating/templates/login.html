@@ -1,5 +1,24 @@
+<!doctype HTML>
+<head>
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+</head>
+
+<div class="center" style="height:30%">
+	<h1> INSERT PITHY HEADING and/or NAME OF PRODUCT HERE </h1>
+	<div>
+		<div class="head_link"> <a href="login"> <b>Log In</b> </a> </div> 
+		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="register"> Register </a> </div> 
+		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="/"> About </a>  </div> 
+	</div>
+</div>
+
+<center>
+<h1> Log in to access the site! </h1>
 <form action="{{ url_for('process_login') }}" method="post" enctype="multipart/form-data">
-username: <input type="text" name="username" size="40"> <br>
-password: <input type="password" name="pass" size="40"> <br>
+username: <input type="text" name="username" size="40"> <br> <br>
+password: <input type="password" name="pass" size="40"> <br> <br>
 <input type="submit">
 </form>
+</center>

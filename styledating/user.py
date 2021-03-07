@@ -1,5 +1,6 @@
 from flask_login import UserMixin
 from util import *
+import random
 
 class User(UserMixin):
 	def __init__(self,username):
@@ -11,8 +12,7 @@ class User(UserMixin):
 		self.name = f[0][0]
 		self.picfile = f[0][1]
 		self.c = list(f[0][2:5])
-		print("selfc is ", self.c)
-
+		
 		self.num = 3 - (self.c[0] == "") - (self.c[1] == "") - (self.c[2] == "")
 
 	def is_authenticated(self):
@@ -29,9 +29,7 @@ class User(UserMixin):
 		return (f[0][0] != "") + (f[0][1] != "") +(f[0][2] != "")
 
 	def compute_best_match(self):
-		print(self.name)
-		return self
-		
+		return User('b')
 
 	def donewith(self,n):
 		if n==1:

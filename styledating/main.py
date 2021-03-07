@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 import sqlite3
 import hashlib
+import re
 from util import *
 from user import *
 from autograde import *
@@ -67,6 +68,7 @@ def logout():
     return redirect(url_for('index'))
 
 dct = {1:'pal', 2:'robot', 3:'rotated'}
+fcn_names = {1:'palindrome', 2:'judge', 3:'rotate'}
 
 @app.route('/code/<int:n>')
 @login_required
@@ -75,9 +77,9 @@ def coding_chal(n):
 		return "???"
 	else:
 		sc = open("challenges/"+dct[n]+"_sc.py").read()
-		question_text = open("challenges/"+dct[n]+"_question.txt").read()
+		question_text = open("challenges/"+dct[n]+"_desc.txt").read().split('\n')
 		return render_template("code_chall.html",\
-			n=n,question_text=question_text,code=sc,results="No results yet!",done=None)
+			n=n,question_text=question_text,code=sc,results=["No results yet!"],done=None)
 
 @app.route('/process_code', methods=['POST'])
 @login_required
@@ -86,12 +88,13 @@ def process_code():
 	if n < 1 or n > 3:
 		return "???"
 	else:
-		question_text = open("challenges/"+dct[n]+"_question.txt").read()
+		question_text = open("challenges/"+dct[n]+"_desc.txt").read().split('\n')
 		user_code = request.form['code_submission']
 		tc_filename ="challenges/"+dct[n]+"_testcases.txt"
 		sol_filename = "challenges/"+dct[n]+"_sol.txt"
 
-		(numWrong,result_string) = runAutograder("python",user_code,"foo",tc_filename, sol_filename)
+		(numWrong,results) = runAutograder("python",user_code,fcn_names[n],tc_filename, sol_filename)
+		results = results.split('\n')
 
 		if numWrong == 0:
 			current_user.updatedb(n,user_code)
@@ -100,19 +103,25 @@ def process_code():
 			done=(numWrong == 0))
 
 @app.route('/matches')
+@app.route('/matches/<string:typ>/<string:other>')
 @login_required
-def matches():
+def matches(typ=None,other=None):
+	if other != None:
+		sql_execute('''insert into actions values(?,?,?)''', (typ,current_user.username,other))
+	
 	if current_user.numdone() < 3:
-		return render_template("matches.html",user=current_user)
+		return render_template("notyet.html",user=current_user)
 
 	best_match = current_user.compute_best_match()
 	return render_template("matches.html",user=best_match)
+	
+
 
 @app.route('/evaluations')
 @login_required
 def evaluations():
 	return render_template("evaluations.html",user=current_user)
-
+	
 @app.route('/profile')
 @login_required
 def profile():
@@ -121,7 +130,8 @@ def profile():
 @app.route('/chat')
 @login_required
 def chat():
-	return "welcome to chat"
+	matches = current_user.get_matches()
+
 
 if __name__ == '__main__':
 	app.run(debug=True)

@@ -38,7 +38,9 @@ document.getElementById('code').addEventListener('keydown', function(e) {
 
 <div class="container">
   <div class="question">
-    {{ question_text }}
+		{% for para in question_text %}
+		<p>{{para}}</p>
+		{% endfor %}	
   </div>
   <div class="code-area">
   	<textarea onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
@@ -55,7 +57,11 @@ document.getElementById('code').addEventListener('keydown', function(e) {
 
 <h1> Results </h1>
 <div class="results">
-{{ results }}
+{% for i in results %}
+{{ i }}
+<br>
+{% endfor %}
+
 </div>
 
 {% if done %}
