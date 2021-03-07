@@ -25,18 +25,38 @@ document.getElementById('code').addEventListener('keydown', function(e) {
 	<div>
 		<div class="head_link"> <a href="profile"> My Profile </a> </div> 
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="evaluations"> My Evaluations </a> </div> 
+		<div class="head_link"> <a href="/evaluations"> My Evaluations </a> </div> 
 		<div class="vbar"> <3 </div>
 		<div class="head_link"> <a href="matches"> My Matches </a>  </div> 
+		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="/mutual"> Mutual Matches </a>  </div> 
+		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="logout"> <em> Log Out </em> </a>  </div> 
 	</div>
 </div>
+
 
 <h1> Code Evaluation (or better title here) </h1>
 
 <div class="container">
   <div class="question">
-    {{ question_text }}
-  </div>
+		{% for para in question_text %}
+		<p>{{para}}</p>
+		{% endfor %}	
+  	</div>
+	<form id="lang" action="{{ url_for('process_language')}}" method="post">
+	
+	<input type="radio" id="C" name="language" value="C">
+	<label for="C">C</label>
+	<input type="radio" id="Python" name="language" value="Python">
+	<label for="Python">Python</label><br>
+
+	<input type="hidden" name="n" value="{{n}}">
+	<input type="submit" value="SELECT LANGUAGE">
+	</form>
+
+
+
   <div class="code-area">
   	<textarea onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
   	rows="20" class="input" id="code" form="user_code" form="final_submission" 
@@ -44,6 +64,8 @@ document.getElementById('code').addEventListener('keydown', function(e) {
 	<br/><br/>
 
 	<form id="user_code" action="{{ url_for('process_code') }}" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="cnum" value="{{n}}">
+	<input type="hidden" name="language" value="{{lang}}">
 	<input type="submit" value="RUN TESTS">
 	</form>
   </div>
@@ -51,7 +73,11 @@ document.getElementById('code').addEventListener('keydown', function(e) {
 
 <h1> Results </h1>
 <div class="results">
-{{ results }}
+{% for i in results %}
+{{ i }}
+<br>
+{% endfor %}
+
 </div>
 
 {% if done %}
