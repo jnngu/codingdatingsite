@@ -1,7 +1,7 @@
 <!doctype HTML>
 <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='style.css')}}">
 
-<script> 
+<script>
 document.getElementById('code').addEventListener('keydown', function(e) {
   if (e.key == 'Tab') {
     e.preventDefault();
@@ -21,17 +21,17 @@ document.getElementById('code').addEventListener('keydown', function(e) {
 
 
 <div class="center" style="height:30%">
-	<h1> INSERT PITHY HEADING and/or NAME OF PRODUCT HERE </h1>
+	<h1> TypeMatch: Finding you a job - and a date! </h1>
 	<div>
-		<div class="head_link"> <a href="profile"> My Profile </a> </div> 
+		<div class="head_link"> <a href="profile"> My Profile </a> </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="/evaluations"> My Evaluations </a> </div> 
+		<div class="head_link"> <a href="/evaluations"> My Evaluations </a> </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="matches"> My Matches </a>  </div> 
+		<div class="head_link"> <a href="matches"> My Matches </a>  </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="/mutual"> Mutual Matches </a>  </div> 
+		<div class="head_link"> <a href="/mutual"> Mutual Matches </a>  </div>
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="logout"> <em> Log Out </em> </a>  </div> 
+		<div class="head_link"> <a href="logout"> <em> Log Out </em> </a>  </div>
 	</div>
 </div>
 
@@ -42,10 +42,10 @@ document.getElementById('code').addEventListener('keydown', function(e) {
   <div class="question">
 		{% for para in question_text %}
 		<p>{{para}}</p>
-		{% endfor %}	
+		{% endfor %}
   	</div>
 	<form id="lang" action="{{ url_for('process_language')}}" method="post">
-	
+
 	<input type="radio" id="C" name="language" value="C">
 	<label for="C">C</label>
 	<input type="radio" id="Python" name="language" value="Python">
@@ -59,7 +59,7 @@ document.getElementById('code').addEventListener('keydown', function(e) {
 
   <div class="code-area">
   	<textarea onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}"
-  	rows="20" class="input" id="code" form="user_code" form="final_submission" 
+  	rows="20" class="input" id="code" form="user_code" form="final_submission"
   	name="code_submission" autofocus>{{ code }}</textarea>
 	<br/><br/>
 
