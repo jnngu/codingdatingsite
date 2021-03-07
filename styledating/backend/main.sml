@@ -31,8 +31,7 @@ struct
           (SOME (v1, f), SOME (v2, _)) => SOME (f (v1, v2))
         | _ => NONE) (report1, report2)
     in
-      StrDict.foldli (fn (name, x, y) => (print (name ^ " is " ^ Real.toString
-      x ^ "\n"); x + y)) 0.0 both
+      StrDict.foldli (fn (name, x, y) => (x + y)) 0.0 both
     end
 
 end
@@ -43,4 +42,5 @@ val [name1, name2] = map String.implode (map (List.filter (fn x => not (Char.isS
 x))) (map String.explode L))
 val score = Main.check name1 name2
 
-val _ = TextIO.output (TextIO.stdOut, Real.toString score)
+val outs = TextIO.openOut "output"
+val _ = TextIO.output (outs, Real.toString score)
