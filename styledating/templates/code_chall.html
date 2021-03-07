@@ -25,11 +25,14 @@ document.getElementById('code').addEventListener('keydown', function(e) {
 	<div>
 		<div class="head_link"> <a href="profile"> My Profile </a> </div> 
 		<div class="vbar"> <3 </div>
-		<div class="head_link"> <a href="evaluations"> My Evaluations </a> </div> 
+		<div class="head_link"> <a href="/evaluations"> My Evaluations </a> </div> 
 		<div class="vbar"> <3 </div>
 		<div class="head_link"> <a href="matches"> My Matches </a>  </div> 
+		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="logout"> <em> Log Out </em> </a>  </div> 
 	</div>
 </div>
+
 
 <h1> Code Evaluation (or better title here) </h1>
 
@@ -44,6 +47,7 @@ document.getElementById('code').addEventListener('keydown', function(e) {
 	<br/><br/>
 
 	<form id="user_code" action="{{ url_for('process_code') }}" method="post" enctype="multipart/form-data">
+	<input type="text" name="cnum" value="{{n}}">
 	<input type="submit" value="RUN TESTS">
 	</form>
   </div>

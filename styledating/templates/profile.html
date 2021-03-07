@@ -1,9 +1,28 @@
 <!doctype HTML>
 <link rel="stylesheet" type="text/css" href = {{ url_for("static", filename="style.css")}} >
-<h1> hi; thiis is a header </h1>
 
-{% if name=="bob" %}
-<p> Hi {{ name }} </p>
-{% else %}
-<p> plz log in </p>
-{% endif %}
+<div class="center" style="height:30%">
+	<h1> INSERT PITHY HEADING and/or NAME OF PRODUCT HERE </h1>
+	<div>
+		<div class="head_link"> <a href="profile"> My Profile </a> </div> 
+		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="evaluations"> My Evaluations </a> </div> 
+		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="matches"> My Matches </a>  </div> 
+		<div class="vbar"> <3 </div>
+		<div class="head_link"> <a href="logout"> <em> Log Out </em> </a>  </div> 
+	</div>
+</div>
+
+<br>
+<div style="float:left;width:30%;margin:1%;">
+	<center>
+<img class="image-cropper" width="30%" src="{{'/static/pfps/'+user.username}}"/>
+</center>
+</div>
+<div style="float:left;width:60%;margin:1%;">
+<p class="fancy"> {{ user.name }}'s Profile </p>
+
+</div>
+
+

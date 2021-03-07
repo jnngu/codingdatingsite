@@ -23,11 +23,28 @@ h1 {
 strong {
 	font-weight: 900;
 }
+.image-cropper {
+  width: 300px;
+  height:300px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
 
+img {
+  display: inline;
+  margin: 0 auto;
+  height: 100%;
+  width: auto;
+}
 .head_link:hover{
 	background-color: pink
 }
-
+.fancy {
+	font-size:100px;
+	line-height:0%;
+	font-family:Snell Roundhand, cursive;
+}
 .input, #results {
   height: 60%;
 }
@@ -43,7 +60,7 @@ input[type=submit] {
   height: 50px;
   cursor: pointer;
   background-color: pink;
-  color: white;
+  color: black;
   font-weight: bolder;
 }
 
@@ -66,6 +83,7 @@ input[type=submit] {
 	justify-content: center;
 	width:100%;
 }
+
 .title {
 	font-size: 42pt;
 	margin:12pt;
@@ -120,7 +138,6 @@ input[type=submit] {
 	float:left;
 	width:48%;
 	margin:1%;
-
 }
 
 
