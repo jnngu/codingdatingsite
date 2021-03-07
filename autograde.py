@@ -2,9 +2,6 @@ import sys
 import traceback
 import signal
 import os
-#print ('Number of arguments:', len(sys.argv), 'arguments.')
-#print ('Argument List:', str(sys.argv))
-
 
 
 python_ex = """def foo(x):
@@ -123,8 +120,13 @@ def runAutograder(language, codeStr, functionName, inputList, goldenFile):
     if output[0] == -1:
         print(output[1])
     else:
-        correctness = compareFiles("out.txt", "golden.txt")
-        print(correctness)
+        if not os.path.exists("out.txt"):
+            print("output file not generated")
+        elif not os.path.exists(goldenFile):
+            print("golden not found")
+        else:
+            correctness = compareFiles("out.txt", goldenFile)
+            print(correctness)
 
 
 inputList = ["hi", "bye", "seeya"]
