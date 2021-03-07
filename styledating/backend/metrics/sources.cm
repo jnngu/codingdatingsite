@@ -15,5 +15,6 @@ is
   AverageLineLengthMetric.sml
   MaxLineLengthMetric.sml
   MkEitherMetric.fun
+  CaseMetric.sml
 
   Metrics.sml
