@@ -44,3 +44,4 @@ val score = Main.check name1 name2
 
 val outs = TextIO.openOut "output"
 val _ = TextIO.output (outs, Real.toString score)
+val _ = TextIO.closeOut outs
