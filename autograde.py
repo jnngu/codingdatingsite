@@ -115,7 +115,9 @@ def compareFiles (userFile, goldenFile):
 
 
 
-def runAutograder(language, codeStr, functionName, inputList, goldenFile):
+def runAutograder(language, codeStr, functionName, inputFile, goldenFile):
+    inputList = [i.strip().split() for i in open(inputFile).readlines()]
+    print(inputList)
     output = runCode(language, codeStr, functionName, inputList)
     if output[0] == -1:
         print(output[1])
@@ -130,5 +132,5 @@ def runAutograder(language, codeStr, functionName, inputList, goldenFile):
 
 
 inputList = ["hi", "bye", "seeya"]
-runAutograder("python", python_ex, "foo", inputList, "golden.txt")
-runAutograder("c", test_c, "foo", inputList, "golden.txt")
+runAutograder("python", python_ex, "foo", "input.txt", "golden.txt")
+runAutograder("c", test_c, "foo", "input.txt", "golden.txt")
