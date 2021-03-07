@@ -1,0 +1,19 @@
+Group
+  structure Metrics
+  structure Result
+  signature METRIC
+is
+  $/basis.cm
+  ../util/sources.cm
+  ../code/sources.cm
+  Result.sml
+  compare.sml
+
+  METRIC.sig
+  LineMetric.sml
+  IndentMetric.sml
+  AverageLineLengthMetric.sml
+  MaxLineLengthMetric.sml
+  MkEitherMetric.fun
+
+  Metrics.sml

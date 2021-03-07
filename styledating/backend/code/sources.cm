@@ -1,0 +1,15 @@
+Group
+  structure Code
+  structure Lang
+  structure Languages
+is
+  $/smlnj-lib.cm
+  $/basis.cm
+
+  ../util/sources.cm
+  lang/sources.cm
+
+  CODE.sig
+  MkCode.fun
+  Code.sml
+

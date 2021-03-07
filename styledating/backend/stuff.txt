@@ -1,0 +1,12 @@
+possible language-agnostic metrics:
+  lines of code
+  usage of camelCase vs snake_case vs UpperCase (need to know what all keywords are)
+  tabs vs spaces
+  average line length
+  maximum line length
+  number of functions defined (need to know what a function keyword is)
+  number of comments (need to know what comment delimiters are)
+
+possible language-specific metrics:
+  curly braces with a space or newline or not (C)
+  fors vs whiles vs gotos vs do-whiles (C)

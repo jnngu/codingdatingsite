@@ -1,0 +1,12 @@
+Group
+  source(-)
+is
+  $/smlnj-lib.cm
+  $/basis.cm
+
+  CharKey.sml
+  StringKey.sml
+
+  CharSet.sml
+  StrSet.sml
+  StrDict.sml

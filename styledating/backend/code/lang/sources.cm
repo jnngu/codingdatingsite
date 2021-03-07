@@ -1,0 +1,20 @@
+Group
+  structure Languages
+  signature LANG
+  structure Lang
+is
+  $/smlnj-lib.cm
+  $/basis.cm
+  ../../util/sources.cm
+
+  Languages.sml
+  LANG.sig
+
+  (* Add languages here *)
+  CLang.sml
+  PythonLang.sml
+  MkEitherLang.sml
+
+  Lang.sml
+
+
