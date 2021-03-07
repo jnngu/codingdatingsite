@@ -4,6 +4,7 @@ import sqlite3
 import hashlib
 from util import *
 from user import *
+from autograde import *
 
 app = Flask(__name__)
 app.secret_key = open('secret_key.txt').read()
@@ -65,34 +66,38 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+dct = {1:'pal', 2:'robot', 3:'rotated'}
+
 @app.route('/code/<int:n>')
 @login_required
 def coding_chal(n):
-	if n < 0 or n > 3:
+	if n < 1 or n > 3:
 		return "???"
 	else:
-		question_text = "sample question text for question " + str(n)
+		sc = open("challenges/"+dct[n]+"_sc.py").read()
+		question_text = open("challenges/"+dct[n]+"_question.txt").read()
 		return render_template("code_chall.html",\
-			n=n,question_text=question_text,code="def main():",results="No results yet!",done=None)
-
-def autograde(s):
-	if len(s.split('\n')) > 1:
-		return ("good job!", True)
-	return ("not quite", False)
+			n=n,question_text=question_text,code=sc,results="No results yet!",done=None)
 
 @app.route('/process_code', methods=['POST'])
 @login_required
 def process_code():
 	n = int(request.form['cnum'])
-	if n < 0 or n > 3:
+	if n < 1 or n > 3:
 		return "???"
 	else:
-		question_text = "sample question text for question " + str(n)
+		question_text = open("challenges/"+dct[n]+"_question.txt").read()
 		user_code = request.form['code_submission']
-		results, passed = autograde(user_code)
-		if passed:
+		tc_filename ="challenges/"+dct[n]+"_testcases.txt"
+		sol_filename = "challenges/"+dct[n]+"_sol.txt"
+
+		(numWrong,result_string) = runAutograder("python",user_code,"foo",tc_filename, sol_filename)
+
+		if numWrong == 0:
 			current_user.updatedb(n,user_code)
-		return render_template("code_chall.html",n=n,question_text=question_text,code=user_code,results=results,done=passed)
+		return render_template("code_chall.html",n=n,\
+			question_text=question_text,code=user_code,results=results,\
+			done=(numWrong == 0))
 
 @app.route('/matches')
 @login_required
