@@ -35,10 +35,10 @@ def process_registration():
 	num = sql_execute('''SELECT MAX(id) from users''')
 	print(num)
 	newid = 1 if len(num) == 0 or num[0][0] == None else 1 + num[0][0]
-	sql_execute('''INSERT INTO users VALUES (?,?,?,?,?)''',\
-		(newid,f['username'],f['name'],'',hashpw(f['pass']),))
+	sql_execute('''INSERT INTO users VALUES (?,?,?,?,?,?,?,?)''',\
+		(newid,f['username'],f['name'],'',hashpw(f['pass']),"","",""))
 	pfp = request.files['pfp']
-	pfp.save('database/pfps/'+f['username'])
+	pfp.save('static/pfps/'+f['username'])
 	#return f"registered! You are user #{newid}<br>" + render_template("login.html")
 	return redirect(url_for('login'))
 
@@ -57,7 +57,7 @@ def process_login():
 		return "sorry, login failed\n" + render_template("login.html")
 	user = User(f['username'])
 	login_user(user)
-	return redirect(url_for('coding_chal'))
+	return redirect(url_for('evaluations'))
 
 @app.route("/logout")
 @login_required
@@ -65,11 +65,15 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/code')
+@app.route('/code/<int:n>')
 @login_required
-def coding_chal():
-	question_text = "sample question text"
-	return render_template("code_chall.html",question_text=question_text,code="def main():",results="No results yet!",done=None)
+def coding_chal(n):
+	if n < 0 or n > 3:
+		return "???"
+	else:
+		question_text = "sample question text for question " + str(n)
+		return render_template("code_chall.html",\
+			n=n,question_text=question_text,code="def main():",results="No results yet!",done=None)
 
 def autograde(s):
 	if len(s.split('\n')) > 1:
@@ -79,27 +83,30 @@ def autograde(s):
 @app.route('/process_code', methods=['POST'])
 @login_required
 def process_code():
-	question_text = "sample question text"
-	user_code = request.form['code_submission']
-	results, passed = autograde(user_code)
-	if passed:
-		sql_execute('INSERT INTO snippets VALUES(?,?)', (current_user.name,user_code))
-
-	return render_template("code_chall.html",question_text=question_text,code=user_code,results=results,done=passed)
+	n = int(request.form['cnum'])
+	if n < 0 or n > 3:
+		return "???"
+	else:
+		question_text = "sample question text for question " + str(n)
+		user_code = request.form['code_submission']
+		results, passed = autograde(user_code)
+		if passed:
+			current_user.updatedb(n,user_code)
+		return render_template("code_chall.html",n=n,question_text=question_text,code=user_code,results=results,done=passed)
 
 @app.route('/matches')
 @login_required
 def matches():
-	print(current_user)
-	print(current_user.id)
-	return f"hi {current_user.name}, here are your matches"
+	if current_user.numdone() < 3:
+		return render_template("matches.html",user=current_user)
+
+	best_match = current_user.compute_best_match()
+	return render_template("matches.html",user=best_match)
 
 @app.route('/evaluations')
 @login_required
 def evaluations():
-	print(current_user)
-	print(current_user.id)
-	return f"hi {current_user.name}, here are your evaluations"
+	return render_template("evaluations.html",user=current_user)
 
 @app.route('/profile')
 @login_required
