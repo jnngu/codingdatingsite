@@ -99,19 +99,20 @@ def compareFiles (userFile, goldenFile):
     numWrong = 0
     userLine = user.readlines()
     goldenLine = golden.readlines()
+    outStr = ""
     for idx in range(len(goldenLine)):
         if idx >= len(userLine):
-            print("Test Case {} Failed".format(idx))
+            outStr += "Test Case {} Failed\n".format(idx)
             numWrong += 1            
         elif userLine[idx].strip() == goldenLine[idx].strip():
-            print("Test Case {} Passed".format(idx))
+            outStr += "Test Case {} Passed\n".format(idx)
         else:
-            print("Test Case {} Failed".format(idx))
+            outStr += "Test Case {} Failed\n".format(idx)
             numWrong += 1
 
     user.close()
     golden.close()
-    return numWrong
+    return (numWrong, outStr)
 
 
 
@@ -122,16 +123,21 @@ def runAutograder(language, codeStr, functionName, inputFile, goldenFile):
     output = runCode(language, codeStr, functionName, inputList)
     if output[0] == -1:
         print(output[1])
+        return (-1, output[1])
     else:
         if not os.path.exists("out.txt"):
             print("output file not generated")
+            return (-1, "output file not generated")
         elif not os.path.exists(goldenFile):
             print("golden not found")
+            return (-1, "golden not found")
         else:
-            correctness = compareFiles("out.txt", goldenFile)
-            print(correctness)
+            numWrong, outStr = compareFiles("out.txt", goldenFile)
+            return (numWrong, outStr)
 
 
 inputList = ["hi", "bye", "seeya"]
-runAutograder("python", python_ex, "foo", "input.txt", "golden.txt")
-runAutograder("c", test_c, "foo", "input.txt", "golden.txt")
+a = runAutograder("python", python_ex, "foo", "input.txt", "golden.txt")
+print(a)
+b= runAutograder("c", test_c, "foo", "input.txt", "golden.txt")
+print(b)
